@@ -41,13 +41,11 @@ class PostsController < ApplicationController
 
   def vote
     vote = Vote.create(voteable: @post, creator: current_user, vote: params[:vote])
-    if vote.errors.any?
-      flash[:error] = "Error Processing your Vote"
-    else
-      flash[:notice] = "Vote accepted"
-    end
 
-    redirect_to :back
+    respond_to do |format|
+      format.html { redirect_to :back }
+      format.js
+    end
   end
 
   private

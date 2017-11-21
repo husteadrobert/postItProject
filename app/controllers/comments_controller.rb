@@ -16,13 +16,20 @@ class CommentsController < ApplicationController
   end
 
   def vote
+    @comment = Comment.find(params[:id])
     vote = Vote.create(voteable: Comment.find(params[:id]), creator: current_user, vote: params[:vote])
-    if vote.errors.any?
-      flash[:error] = "Error Processing your Vote"
-    else
-      flash[:notice] = "Vote accepted"
+
+    respond_to do |format|
+      format.html { redirect_to :back }
+      format.js
     end
 
-    redirect_to :back
+    # if vote.errors.any?
+    #   flash[:error] = "Error Processing your Vote"
+    # else
+    #   flash[:notice] = "Vote accepted"
+    # end
+
+    # redirect_to :back
   end
 end
