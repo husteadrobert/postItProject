@@ -12,11 +12,11 @@ class User < ActiveRecord::Base
 
   def generate_slug
     the_slug = create_slug(self.username)
-    post = Post.find_by(slug: the_slug)
+    post = User.find_by(slug: the_slug)
     count = 2
     while post && post != self
       the_slug = append_suffix(the_slug, count)
-      post = Post.find_by(slug: the_slug)
+      post = User.find_by(slug: the_slug)
       count += 1
     end
     self.slug = the_slug
