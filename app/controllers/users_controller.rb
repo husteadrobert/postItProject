@@ -7,7 +7,7 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.new(params.require(:user).permit(:username, :password))
+    @user = User.new(params.require(:user).permit(:username, :password, :time_zone))
     if @user.save
       flash[:notice] = "New Users Registered Successfully"
       session[:user_id] = @user.id
@@ -24,7 +24,7 @@ class UsersController < ApplicationController
   end
 
   def update
-    @user.update(params.require(:user).permit(:username, :password))
+    @user.update(params.require(:user).permit(:username, :password, :time_zone))
     if @user.save
       flash[:notice] = "Profile Updated Successfully"
       redirect_to user_path(@user)
@@ -35,7 +35,6 @@ class UsersController < ApplicationController
 
   private
     def get_user
-      #@user = User.find(params[:id])
       @user = User.find_by(slug: params[:id])
     end
 

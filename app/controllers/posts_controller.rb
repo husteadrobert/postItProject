@@ -1,13 +1,29 @@
 class PostsController < ApplicationController
   before_action :set_post, only: [:show, :edit, :update, :vote]
   before_action :require_user, except: [:show, :index]
+  before_action :require_permission, only: [:edit, :update]
 
   def index
     @posts = Post.all.sort_by{|x| x.total_votes}.reverse
+    respond_to do |format|
+      format.html
+      format.json { render json: @posts, only: [:title, :url] }
+    end
   end
 
   def show
     @comment = Comment.new
+    respond_to do |format|
+      format.html
+      format.json do
+        comment_list = []
+        @post.comments.each do |comment|
+          entry = {body: comment.body, user: comment.creator.username}
+          comment_list.push(entry)
+        end
+        render json: comment_list
+      end
+    end
   end
 
   def new
@@ -57,5 +73,9 @@ class PostsController < ApplicationController
 
     def post_params
       params.require(:post).permit(:title, :url, :description, category_ids: [])
+    end
+
+    def require_permission
+      access_denied unless logged_in? && (current_user.admin? || current_user == @post.creator)
     end
 end

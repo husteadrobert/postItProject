@@ -11,6 +11,10 @@
       <%= f.label :password %>
       <%= f.password_field :password %>
     </div>
+    <div class="control-group">
+      <%= f.label :time_zone %>
+      <%= f.time_zone_select :time_zone, ActiveSupport::TimeZone.all.sort, default: Time.zone.name, include_blank: true %>
+    </div>
     <%= f.submit(@user.new_record? ? "Register" : "Update", class: 'btn btn-primary') %>
   <% end %>
 </div>

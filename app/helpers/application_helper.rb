@@ -4,10 +4,9 @@ module ApplicationHelper
   end
 
   def fix_time(dt)
-    #Update User dt here, need to add letting user set
-    # if logged_in? && !current_user.time_zone.blank?
-    #   dt = dt.in_time_zone(current_user.time_zone)
-    # end
+    if logged_in? && !current_user.time_zone.blank?
+      dt = dt.in_time_zone(current_user.time_zone)
+    end
     dt.strftime("%d/%m/%Y %l:%M%P %Z") if dt
   end
 end
